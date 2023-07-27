@@ -27,10 +27,19 @@ contract CryptoStarterTest is StdCheats, Test {
     );
     event DonatedToCampaign(uint256 id, address donator, uint256 amount);
 
+    /**
+     * Modifiers
+     */
+    modifier createCampaign() {
+        cryptoStarter.createCampaign(CREATOR, TITLE, DESCRIPTION, TARGET, DEADLINE, IMAGE);
+        _;
+    }
+
     function setUp() external {
         DeployCryptoStarter deployer = new DeployCryptoStarter();
         cryptoStarter = deployer.run();
         vm.deal(DONATOR, STARTING_USER_BALANCE); // Give donator some ETH
+        vm.deal(CREATOR, STARTING_USER_BALANCE); // Give creator some ETH
     }
 
     function testCryptoStarterInitializesWithMinDonation() public {
@@ -54,8 +63,7 @@ contract CryptoStarterTest is StdCheats, Test {
         cryptoStarter.createCampaign(CREATOR, TITLE, DESCRIPTION, target, DEADLINE, IMAGE);
     }
 
-    function testAddsCampaignToCampaignsMapping() public {
-        cryptoStarter.createCampaign(CREATOR, TITLE, DESCRIPTION, TARGET, DEADLINE, IMAGE);
+    function testAddsCampaignToCampaignsMapping() public createCampaign {
         CryptoStarter.Campaign memory campaign = cryptoStarter.getCampaign(0);
 
         assertEq(campaign.owner, CREATOR);
@@ -73,8 +81,61 @@ contract CryptoStarterTest is StdCheats, Test {
         cryptoStarter.createCampaign(CREATOR, TITLE, DESCRIPTION, TARGET, DEADLINE, IMAGE);
     }
 
-    function testIncrementsNumberOfCampaigns() public {
-        cryptoStarter.createCampaign(CREATOR, TITLE, DESCRIPTION, TARGET, DEADLINE, IMAGE);
+    function testIncrementsNumberOfCampaigns() public createCampaign {
         assertEq(cryptoStarter.getNumberOfCampaigns(), 1);
+    }
+
+    /**
+     * donateToCampaign()
+     */
+    function testRevertWhenMinimumDonationValueNotMet() public createCampaign {
+        vm.prank(DONATOR);
+        vm.expectRevert(CryptoStarter.CryptoStarter__MinimumDonationValueNotMet.selector);
+        cryptoStarter.donateToCampaign(0);
+    }
+
+    function testRevertWhenOwnerCantDonateToOwnCampaign() public createCampaign {
+        vm.prank(CREATOR);
+        vm.expectRevert(CryptoStarter.CryptoStarter__OwnerCantDonateToOwnCampaign.selector);
+        cryptoStarter.donateToCampaign{value: MIN_DONATION}(0);
+    }
+
+    function testDonatorGetAddedToDonatorsArray() public createCampaign {
+        vm.prank(DONATOR);
+        cryptoStarter.donateToCampaign{value: MIN_DONATION}(0);
+        CryptoStarter.Campaign memory campaign = cryptoStarter.getCampaign(0);
+        assertEq(campaign.donators[0], DONATOR);
+    }
+
+    function testDonationGetAddedToDonationsArray() public createCampaign {
+        vm.prank(DONATOR);
+        cryptoStarter.donateToCampaign{value: MIN_DONATION}(0);
+        CryptoStarter.Campaign memory campaign = cryptoStarter.getCampaign(0);
+        assertEq(campaign.donations[0], MIN_DONATION);
+    }
+
+    function testEmitsEventOnDonationToACampaign() public createCampaign {
+        vm.expectEmit(true, false, false, false, address(cryptoStarter));
+        emit DonatedToCampaign(0, DONATOR, MIN_DONATION);
+        vm.prank(DONATOR);
+        cryptoStarter.donateToCampaign{value: MIN_DONATION}(0);
+    }
+
+    /**
+     * Getters
+     */
+    function testGetDonatorsAndDonations() public createCampaign {
+        vm.prank(DONATOR);
+        cryptoStarter.donateToCampaign{value: MIN_DONATION}(0);
+        (address[] memory donators, uint256[] memory donations) = cryptoStarter.getDonators(0);
+
+        assertEq(donators[0], DONATOR);
+        assertEq(donations[0], MIN_DONATION);
+    }
+
+    function testGetCampaigns() public createCampaign {
+        cryptoStarter.createCampaign(DONATOR, TITLE, DESCRIPTION, TARGET, DEADLINE, IMAGE);
+        CryptoStarter.Campaign[] memory campaigns = cryptoStarter.getCampaigns();
+        assertEq(campaigns.length, 2);
     }
 }

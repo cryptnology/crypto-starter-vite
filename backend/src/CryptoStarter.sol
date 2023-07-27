@@ -115,18 +115,18 @@ contract CryptoStarter {
             revert CryptoStarter__MinimumDonationValueNotMet();
         }
 
-        uint256 amount = msg.value;
-
         Campaign storage campaign = s_campaigns[_id];
 
         if (campaign.owner == msg.sender) {
             revert CryptoStarter__OwnerCantDonateToOwnCampaign();
         }
 
+        uint256 amount = msg.value;
+
         campaign.donators.push(msg.sender);
         campaign.donations.push(amount);
 
-        campaign.amountCollected = campaign.amountCollected + amount;
+        campaign.amountCollected += amount;
         emit DonatedToCampaign(_id, msg.sender, amount);
 
         (bool success,) = payable(campaign.owner).call{value: amount}("");
