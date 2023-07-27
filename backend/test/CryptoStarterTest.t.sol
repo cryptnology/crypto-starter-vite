@@ -3,10 +3,9 @@ pragma solidity ^0.8.19;
 
 import {DeployCryptoStarter} from "../script/DeployCryptoStarter.s.sol";
 import {CryptoStarter} from "../src/CryptoStarter.sol";
-import {Test, console} from "forge-std/Test.sol";
-import {StdCheats} from "forge-std/StdCheats.sol";
+import {Test} from "forge-std/Test.sol";
 
-contract CryptoStarterTest is StdCheats, Test {
+contract CryptoStarterTest is Test {
     CryptoStarter cryptoStarter;
 
     uint256 public constant MIN_DONATION = 0.01 ether;
@@ -112,6 +111,14 @@ contract CryptoStarterTest is StdCheats, Test {
         cryptoStarter.donateToCampaign{value: MIN_DONATION}(0);
         CryptoStarter.Campaign memory campaign = cryptoStarter.getCampaign(0);
         assertEq(campaign.donations[0], MIN_DONATION);
+    }
+
+    function testMultipleDonationsGetAddedToAmountCollected() public createCampaign {
+        vm.prank(DONATOR);
+        cryptoStarter.donateToCampaign{value: MIN_DONATION}(0);
+        cryptoStarter.donateToCampaign{value: MIN_DONATION}(0);
+        CryptoStarter.Campaign memory campaign = cryptoStarter.getCampaign(0);
+        assertEq(campaign.amountCollected, MIN_DONATION * 2);
     }
 
     function testEmitsEventOnDonationToACampaign() public createCampaign {
