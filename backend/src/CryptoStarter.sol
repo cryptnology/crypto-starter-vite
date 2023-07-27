@@ -1,7 +1,32 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.19;
 
+// Layout of Contract:
+// version
+// imports
+// interfaces, libraries, contracts
+// errors
+// Type declarations
+// State variables
+// Events
+// Modifiers
+// Functions
+
+// Layout of Functions:
+// constructor
+// receive function (if exists)
+// fallback function (if exists)
+// external
+// public
+// internal
+// private
+// internal & private view & pure functions
+// external & public view & pure functions
+
 contract CryptoStarter {
+    /**
+     * Type declarations
+     */
     struct Campaign {
         address owner;
         string title;
@@ -14,10 +39,15 @@ contract CryptoStarter {
         uint256[] donations;
     }
 
-    mapping(uint256 => Campaign) public campaigns;
+    /**
+     * State variables
+     */
+    mapping(uint256 => Campaign) private s_campaigns;
+    uint256 private s_numberOfCampaigns;
 
-    uint256 public numberOfCampaigns = 0;
-
+    /**
+     * External functions
+     */
     function createCampaign(
         address _owner,
         string memory _title,
@@ -25,8 +55,8 @@ contract CryptoStarter {
         uint256 _target,
         uint256 _deadline,
         string memory _image
-    ) public returns (uint256) {
-        Campaign storage campaign = campaigns[numberOfCampaigns];
+    ) external returns (uint256) {
+        Campaign storage campaign = s_campaigns[s_numberOfCampaigns];
 
         require(campaign.deadline < block.timestamp, "The deadline should be a date in the future.");
 
@@ -38,15 +68,15 @@ contract CryptoStarter {
         campaign.amountCollected = 0;
         campaign.image = _image;
 
-        numberOfCampaigns++;
+        s_numberOfCampaigns++;
 
-        return numberOfCampaigns - 1;
+        return s_numberOfCampaigns - 1;
     }
 
-    function donateToCampaign(uint256 _id) public payable {
+    function donateToCampaign(uint256 _id) external payable {
         uint256 amount = msg.value;
 
-        Campaign storage campaign = campaigns[_id];
+        Campaign storage campaign = s_campaigns[_id];
 
         campaign.donators.push(msg.sender);
         campaign.donations.push(amount);
@@ -58,15 +88,18 @@ contract CryptoStarter {
         }
     }
 
-    function getDonators(uint256 _id) public view returns (address[] memory, uint256[] memory) {
-        return (campaigns[_id].donators, campaigns[_id].donations);
+    /**
+     * External & public view & pure functions
+     */
+    function getDonators(uint256 _id) external view returns (address[] memory, uint256[] memory) {
+        return (s_campaigns[_id].donators, s_campaigns[_id].donations);
     }
 
-    function getCampaigns() public view returns (Campaign[] memory) {
-        Campaign[] memory allCampaigns = new Campaign[](numberOfCampaigns);
+    function getCampaigns() external view returns (Campaign[] memory) {
+        Campaign[] memory allCampaigns = new Campaign[](s_numberOfCampaigns);
 
-        for (uint256 i = 0; i < numberOfCampaigns; i++) {
-            Campaign storage item = campaigns[i];
+        for (uint256 i = 0; i < s_numberOfCampaigns; i++) {
+            Campaign storage item = s_campaigns[i];
 
             allCampaigns[i] = item;
         }
