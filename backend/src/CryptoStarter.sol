@@ -36,6 +36,8 @@ contract CryptoStarter {
     error CryptoStarter__DeadlineShouldBeAFutureDate();
     error CryptoStarter__MinimumDonationValueNotMet();
     error CryptoStarter__TransferFailed();
+    error CryptoStarter__OwnerCantDonateToOwnCampaign();
+    error CryptoStarter__MinimumTargetValueNotMet();
 
     /**
      * Type declarations
@@ -87,6 +89,10 @@ contract CryptoStarter {
             revert CryptoStarter__DeadlineShouldBeAFutureDate();
         }
 
+        if (_target < i_minDonation) {
+            revert CryptoStarter__MinimumTargetValueNotMet();
+        }
+
         Campaign storage campaign = s_campaigns[s_numberOfCampaigns];
 
         campaign.owner = _owner;
@@ -112,6 +118,10 @@ contract CryptoStarter {
         uint256 amount = msg.value;
 
         Campaign storage campaign = s_campaigns[_id];
+
+        if (campaign.owner == msg.sender) {
+            revert CryptoStarter__OwnerCantDonateToOwnCampaign();
+        }
 
         campaign.donators.push(msg.sender);
         campaign.donations.push(amount);
@@ -152,7 +162,7 @@ contract CryptoStarter {
         return s_numberOfCampaigns;
     }
 
-    function getMinContribution() external view returns (uint256) {
+    function getMinDonation() external view returns (uint256) {
         return i_minDonation;
     }
 }
