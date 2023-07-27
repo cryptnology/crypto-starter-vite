@@ -23,7 +23,20 @@ pragma solidity ^0.8.19;
 // internal & private view & pure functions
 // external & public view & pure functions
 
+/**
+ * @title CryptoStarter
+ * @author Jamie Anderson
+ * @notice This contract is used to create and run a crowdfunding campaign
+ * @dev This contract uses the Forge framework to create a crowdfunding campaign
+ */
 contract CryptoStarter {
+    /**
+     * Errors
+     */
+    error CryptoStarter__DeadlineShouldBeAFutureDate();
+    error CryptoStarter__MinimumDonationValueNotMet();
+    error CryptoStarter__TransferFailed();
+
     /**
      * Type declarations
      */
@@ -42,8 +55,22 @@ contract CryptoStarter {
     /**
      * State variables
      */
+    uint256 private immutable i_minDonation;
+
     mapping(uint256 => Campaign) private s_campaigns;
     uint256 private s_numberOfCampaigns;
+
+    constructor(uint256 _minDonation) {
+        i_minDonation = _minDonation;
+    }
+
+    /**
+     * Events
+     */
+    event CreatedCampaign(
+        uint256 id, address owner, string title, string description, uint256 target, uint256 deadline, string image
+    );
+    event DonatedToCampaign(uint256 id, address donator, uint256 amount);
 
     /**
      * External functions
@@ -56,9 +83,11 @@ contract CryptoStarter {
         uint256 _deadline,
         string memory _image
     ) external returns (uint256) {
-        Campaign storage campaign = s_campaigns[s_numberOfCampaigns];
+        if (_deadline < block.timestamp) {
+            revert CryptoStarter__DeadlineShouldBeAFutureDate();
+        }
 
-        require(campaign.deadline < block.timestamp, "The deadline should be a date in the future.");
+        Campaign storage campaign = s_campaigns[s_numberOfCampaigns];
 
         campaign.owner = _owner;
         campaign.title = _title;
@@ -68,12 +97,18 @@ contract CryptoStarter {
         campaign.amountCollected = 0;
         campaign.image = _image;
 
+        emit CreatedCampaign(s_numberOfCampaigns, _owner, _title, _description, _target, _deadline, _image);
+
         s_numberOfCampaigns++;
 
         return s_numberOfCampaigns - 1;
     }
 
     function donateToCampaign(uint256 _id) external payable {
+        if (msg.value < i_minDonation) {
+            revert CryptoStarter__MinimumDonationValueNotMet();
+        }
+
         uint256 amount = msg.value;
 
         Campaign storage campaign = s_campaigns[_id];
@@ -81,10 +116,12 @@ contract CryptoStarter {
         campaign.donators.push(msg.sender);
         campaign.donations.push(amount);
 
-        (bool sent,) = payable(campaign.owner).call{value: amount}("");
+        campaign.amountCollected = campaign.amountCollected + amount;
+        emit DonatedToCampaign(_id, msg.sender, amount);
 
-        if (sent) {
-            campaign.amountCollected = campaign.amountCollected + amount;
+        (bool success,) = payable(campaign.owner).call{value: amount}("");
+        if (!success) {
+            revert CryptoStarter__TransferFailed();
         }
     }
 
@@ -105,5 +142,17 @@ contract CryptoStarter {
         }
 
         return allCampaigns;
+    }
+
+    function getCampaign(uint256 _id) external view returns (Campaign memory) {
+        return s_campaigns[_id];
+    }
+
+    function getNumberOfCampaigns() external view returns (uint256) {
+        return s_numberOfCampaigns;
+    }
+
+    function getMinContribution() external view returns (uint256) {
+        return i_minDonation;
     }
 }
