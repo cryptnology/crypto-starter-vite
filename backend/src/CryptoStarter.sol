@@ -16,6 +16,7 @@ contract CryptoStarter {
     error CryptoStarter__TransferFailed();
     error CryptoStarter__OwnerCantDonateToOwnCampaign();
     error CryptoStarter__MinimumTargetValueNotMet();
+    error CryptoStarter__DeadlineHasPassed();
 
     /**
      * Type declarations
@@ -97,6 +98,10 @@ contract CryptoStarter {
 
         if (campaign.owner == msg.sender) {
             revert CryptoStarter__OwnerCantDonateToOwnCampaign();
+        }
+
+        if (campaign.deadline < block.timestamp) {
+            revert CryptoStarter__DeadlineHasPassed();
         }
 
         uint256 amount = msg.value;

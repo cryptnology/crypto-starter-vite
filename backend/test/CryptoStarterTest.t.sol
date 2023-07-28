@@ -93,6 +93,15 @@ contract CryptoStarterTest is Test {
         cryptoStarter.donateToCampaign(0);
     }
 
+    function testRevertWhenDeadlineHasPassed() public createCampaign {
+        vm.warp(block.timestamp + DEADLINE + 1);
+        vm.roll(block.number + 1);
+
+        vm.prank(DONATOR);
+        vm.expectRevert(CryptoStarter.CryptoStarter__DeadlineHasPassed.selector);
+        cryptoStarter.donateToCampaign{value: MIN_DONATION}(0);
+    }
+
     function testRevertWhenOwnerCantDonateToOwnCampaign() public createCampaign {
         vm.prank(CREATOR);
         vm.expectRevert(CryptoStarter.CryptoStarter__OwnerCantDonateToOwnCampaign.selector);
