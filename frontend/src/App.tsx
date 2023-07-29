@@ -1,15 +1,19 @@
 import { ConnectWallet } from '@thirdweb-dev/react';
+import { ToggleThemeButton } from './components';
 
 const App = () => {
   return (
-    <ConnectWallet
-      theme="dark"
-      btnTitle="Connect Wallet"
-      dropdownPosition={{
-        side: 'bottom', // "top" | "bottom" | "left" | "right";
-        align: 'end', // "start" | "center" | "end";
-      }}
-    />
+    <>
+      <ToggleThemeButton />
+      <ConnectWallet
+        theme="dark"
+        btnTitle="Connect Wallet"
+        dropdownPosition={{
+          side: 'bottom', // "top" | "bottom" | "left" | "right";
+          align: 'end', // "start" | "center" | "end";
+        }}
+      />
+    </>
   );
 };
 

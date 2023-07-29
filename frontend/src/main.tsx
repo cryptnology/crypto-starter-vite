@@ -5,6 +5,7 @@ import { ThirdwebProvider, metamaskWallet } from '@thirdweb-dev/react';
 import { Localhost, Sepolia } from '@thirdweb-dev/chains';
 
 import App from './App.tsx';
+import { Providers } from '../src/components';
 
 import './index.css';
 
@@ -17,7 +18,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         supportedWallets={[metamaskWallet()]}
         clientId={import.meta.env.VITE_THIRDWEB_CLIENT_ID as string}
       >
-        <App />
+        <Providers>
+          <App />
+        </Providers>
       </ThirdwebProvider>
     </Router>
   </React.StrictMode>,
