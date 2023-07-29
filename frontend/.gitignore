@@ -12,6 +12,13 @@ dist
 dist-ssr
 *.local
 
+src/out/*
+!src/out/CryptoStarter.sol
+
+src/broadcast/*/*/*
+!src/broadcast/*/*/run-latest.json
+src/broadcast/**/dry-run/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

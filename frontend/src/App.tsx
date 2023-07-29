@@ -1,7 +1,9 @@
 import { ConnectWallet } from '@thirdweb-dev/react';
 import { ToggleThemeButton } from './components';
+import { config } from './config';
 
 const App = () => {
+  console.log(config(31337));
   return (
     <>
       <ToggleThemeButton />
