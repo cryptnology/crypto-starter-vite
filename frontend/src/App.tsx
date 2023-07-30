@@ -5,7 +5,7 @@ import { Home } from './pages';
 
 const App = () => {
   return (
-    <div className="relative sm:p-8 p-4 bg-light dark:bg-dark min-h-screen flex flex-row">
+    <div className="relative sm:p-8 p-4 font-epilogue dark:text-light text-dark bg-light dark:bg-dark min-h-screen flex flex-row">
       <div className="sm:flex hidden mr-10 relative">
         <SideBar />
       </div>
