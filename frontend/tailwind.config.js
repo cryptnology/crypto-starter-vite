@@ -31,6 +31,12 @@ export default {
         secondary: 'rgb(117 91 180 / 0.2)',
         secondaryDark: 'rgb(5 118 110 / 0.3)',
       },
+      fontFamily: {
+        epilogue: ['Epilogue', 'sans-serif'],
+      },
+      boxShadow: {
+        secondary: '10px 10px 20px rgba(2, 2, 2, 0.25)',
+      },
     },
   },
   plugins: [],

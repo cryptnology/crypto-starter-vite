@@ -14,8 +14,8 @@ const Moon = ({ className, ...rest }: Props) => (
   >
     <rect x="0" y="0" width="24" height="24" fill="rgba(255, 255, 255, 0)" />
     <g
-      fill="none"
-      stroke="currentColor"
+      fill="#58E6D9"
+      stroke="#58E6D9"
       strokeDasharray="2"
       strokeDashoffset="2"
       strokeLinecap="round"
@@ -61,7 +61,7 @@ const Moon = ({ className, ...rest }: Props) => (
         values="0 12 12;360 12 12"
       />
     </g>
-    <g fill="currentColor">
+    <g fill="#58E6D9">
       <path d="M15.22 6.03L17.75 4.09L14.56 4L13.5 1L12.44 4L9.25 4.09L11.78 6.03L10.87 9.09L13.5 7.28L16.13 9.09L15.22 6.03Z">
         <animate
           fill="freeze"
@@ -81,8 +81,8 @@ const Moon = ({ className, ...rest }: Props) => (
       </path>
     </g>
     <g
-      fill="currentColor"
-      stroke="currentColor"
+      fill="#58E6D9"
+      stroke="#58E6D9"
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth="2"
@@ -143,7 +143,7 @@ const Moon = ({ className, ...rest }: Props) => (
       cx="12"
       cy="12"
       r="10"
-      fill="currentColor"
+      fill="#58E6D9"
       mask="url(#lineMdMoonFilledToSunnyFilledLoopTransition0)"
       opacity="0"
     >
