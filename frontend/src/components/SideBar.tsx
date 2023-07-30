@@ -9,7 +9,7 @@ import { useTheme } from 'next-themes';
 interface IconProps {
   styles?: string;
   name?: string;
-  imgUrl: string;
+  children?: JSX.Element;
   isActive?: string;
   disabled?: boolean;
   handleClick?: () => void;
@@ -18,10 +18,10 @@ interface IconProps {
 const Icon = ({
   styles,
   name,
-  imgUrl,
   isActive,
   disabled,
   handleClick,
+  children,
 }: IconProps) => (
   <div
     className={`w-[48px] h-[48px] rounded-[10px] ${
@@ -31,15 +31,7 @@ const Icon = ({
     } ${styles}`}
     onClick={handleClick}
   >
-    {!isActive ? (
-      <img src={imgUrl} alt="fund_logo" className="w-1/2 h-1/2" />
-    ) : (
-      <img
-        src={imgUrl}
-        alt="fund_logo"
-        className={`w-1/2 h-1/2 ${isActive !== name && 'grayscale'}`}
-      />
-    )}
+    {children}
   </div>
 );
 
@@ -69,7 +61,17 @@ const Sidebar = () => {
                   navigate(link.link);
                 }
               }}
-            />
+            >
+              <div className="flex justify-center items-center">
+                {isActive === link.name ? (
+                  <link.icon
+                    color={`${theme == 'light' ? '#755BB4' : '#58E6D9'}`}
+                  />
+                ) : (
+                  <link.icon color="#f1f2f9" />
+                )}
+              </div>
+            </Icon>
           ))}
         </div>
         <div className="w-[48px] h-[48px] rounded-[10px] bg-[#2c2f32] flex justify-center items-center">
