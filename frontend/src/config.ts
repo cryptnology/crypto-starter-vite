@@ -7,14 +7,11 @@ enum Chains {
 }
 
 export const config = (chainId: number) => {
-  switch (chainId) {
-    case Chains.Localhost:
-      return {
-        contractAddress: localTransactions[0].contractAddress,
-        contractAbi: abi,
-      };
+  const contractAddress =
+    chainId === Chains.Localhost ? localTransactions[0].contractAddress : '';
 
-    default:
-      break;
-  }
+  return {
+    contractAddress,
+    contractAbi: abi,
+  };
 };

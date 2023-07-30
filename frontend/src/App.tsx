@@ -3,7 +3,8 @@ import { ToggleThemeButton } from './components';
 import { config } from './config';
 
 const App = () => {
-  console.log(config(31337));
+  const { contractAddress, contractAbi } = config(31337);
+  console.log(contractAddress, contractAbi);
   return (
     <>
       <ToggleThemeButton />
