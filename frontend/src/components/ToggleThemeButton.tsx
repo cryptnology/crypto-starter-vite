@@ -14,9 +14,15 @@ const ToggleThemeButton = ({ className }: Props) => {
       onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
     >
       {theme === 'light' ? (
-        <Sun className="fill-dark bg-[#2c2f32]" />
+        <Sun
+          className="bg-[#2c2f32]"
+          color={`${theme == 'light' ? '#755BB4' : '#58E6D9'}`}
+        />
       ) : (
-        <Moon className="fill-dark bg-[#2c2f32]" />
+        <Moon
+          className="bg-[#2c2f32]"
+          color={`${theme == 'light' ? '#755BB4' : '#58E6D9'}`}
+        />
       )}
     </button>
   );

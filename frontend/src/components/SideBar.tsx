@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { logo } from '../assets';
 import { navlinks } from '../constants';
 import { ToggleThemeButton } from '.';
+import { Logo } from '../icons';
+import { useTheme } from 'next-themes';
 
 interface IconProps {
   styles?: string;
@@ -45,12 +46,15 @@ const Icon = ({
 const Sidebar = () => {
   const navigate = useNavigate();
   const [isActive, setIsActive] = useState('dashboard');
+  const { theme } = useTheme();
 
   return (
     <div className="flex justify-between items-center flex-col sticky top-5 h-[93vh]">
-      <Link to="/">
-        <Icon styles="w-[52px] h-[52px] bg-[#2c2f32]" imgUrl={logo} />
-      </Link>
+      <div className="w-[52px] h-[52px] rounded-[10px] bg-[#2c2f32] flex justify-center items-center">
+        <Link to="/">
+          <Logo color={`${theme == 'light' ? '#755BB4' : '#58E6D9'}`} />
+        </Link>
+      </div>
 
       <div className="flex-1 flex flex-col justify-between items-center bg-[#1c1c24] rounded-[20px] w-[76px] py-4 mt-12">
         <div className="flex flex-col justify-center items-center gap-3">

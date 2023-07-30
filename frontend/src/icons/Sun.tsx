@@ -1,9 +1,10 @@
 // @ts-nocheck
 interface Props {
   className?: string;
+  color?: string;
 }
 
-const Sun = ({ className, ...rest }: Props) => (
+const Sun = ({ className, color, ...rest }: Props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="21"
@@ -13,8 +14,8 @@ const Sun = ({ className, ...rest }: Props) => (
     className={`w-full h-auto ${className}`}
   >
     <g
-      fill="#58E6D9"
-      stroke="#58E6D9"
+      fill={color}
+      stroke={color}
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth="2"
@@ -39,14 +40,14 @@ const Sun = ({ className, ...rest }: Props) => (
         </path>
       </g>
       <path
-        fill="#58E6D9"
+        fill={color}
         d="M7 6 C7 12.08 11.92 17 18 17 C18.53 17 19.05 16.96 19.56 16.89 C17.95 19.36 15.17 21 12 21 C7.03 21 3 16.97 3 12 C3 8.83 4.64 6.05 7.11 4.44 C7.04 4.95 7 5.47 7 6 Z"
         opacity="0"
       >
         <set attributeName="opacity" begin="0.5s" to="1" />
       </path>
     </g>
-    <g fill="#58E6D9" fillOpacity="0">
+    <g fill={color} fillOpacity="0">
       <path d="m15.22 6.03l2.53-1.94L14.56 4L13.5 1l-1.06 3l-3.19.09l2.53 1.94l-.91 3.06l2.63-1.81l2.63 1.81z">
         <animate
           id="lineMdSunnyFilledLoopToMoonFilledLoopTransition0"
@@ -166,7 +167,7 @@ const Sun = ({ className, ...rest }: Props) => (
       cx="12"
       cy="12"
       r="6"
-      fill="currentColor"
+      fill={color}
       mask="url(#lineMdSunnyFilledLoopToMoonFilledLoopTransition1)"
     >
       <set attributeName="opacity" begin="0.5s" to="0" />
