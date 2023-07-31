@@ -2,6 +2,7 @@ export { default as CreateCampaign } from './CreateCampaign';
 export { default as Dashboard } from './Dashboard';
 export { default as Logo } from './Logo';
 export { default as Logout } from './Logout';
+export { default as Menu } from './Menu';
 export { default as Moon } from './Moon';
 export { default as Payment } from './Payment';
 export { default as Profile } from './Profile';
