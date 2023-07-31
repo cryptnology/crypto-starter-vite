@@ -1,11 +1,31 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ethers } from 'ethers';
+// @ts-ignore
+import { create as ipfsHttpClient } from 'ipfs-http-client';
+import { Buffer } from 'buffer';
+import { useDropzone } from 'react-dropzone';
 
 // import { useStateContext } from '../context';
 import { money } from '../assets';
 import { CustomButton, FormField, Loader } from '../components';
 import { checkIfImage } from '../utils';
+
+const projectId = '2HMLgmtCvb1eNNcB5tqfWXcEGaK';
+const projectSecret = '40ecdb40a18a26b933778e74baff5345';
+const auth = `Basic ${Buffer.from(`${projectId}:${projectSecret}`).toString(
+  'base64',
+)}`;
+
+const client = ipfsHttpClient({
+  host: 'ipfs.infura.io',
+  port: 5001,
+  protocol: 'https',
+  apiPath: '/api/v0',
+  headers: {
+    authorization: auth,
+  },
+});
 
 const CreateCampaign = () => {
   const navigate = useNavigate();
@@ -20,12 +40,50 @@ const CreateCampaign = () => {
     image: '',
   });
 
+  const onDrop = useCallback(async (acceptedFile: any[]) => {
+    const url = await uploadToIpfs(acceptedFile[0]);
+
+    setForm({ ...form, image: url as string });
+  }, []);
+
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    isDragAccept,
+    isDragReject,
+  } = useDropzone({
+    onDrop,
+    accept: 'image/*',
+    maxSize: 5000000,
+  });
+
   const handleFormFieldChange = (
     fieldName: string,
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     setForm({ ...form, [fieldName]: e.target.value });
   };
+
+  const uploadToIpfs = async (file: any) => {
+    try {
+      const added = await client.add({ content: file });
+
+      const url = `https://infura-ipfs.io/ipfs/${added.path}`;
+
+      return url;
+    } catch (error) {
+      console.log('Error uploading to IPFS.', error);
+    }
+  };
+
+  const fileStyle = useMemo(
+    () =>
+      `bg-light border-2 border-dark dark:border-[#46464f] dark:bg-primaryDark rounded-[10px] flex flex-col items-center p-5 ${
+        isDragActive && 'border-dashed border-primary dark:border-[#58E6D9]'
+      }`,
+    [isDragAccept, isDragActive, isDragReject],
+  );
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -42,6 +100,8 @@ const CreateCampaign = () => {
     //   }
     // })
   };
+
+  console.log(form.image);
 
   return (
     <div className="bg-light border-2 border-dark dark:bg-primaryDark dark:border-0 flex justify-center items-center flex-col rounded-[10px] sm:p-10 p-4">
@@ -109,13 +169,35 @@ const CreateCampaign = () => {
           />
         </div>
 
-        <FormField
-          labelName="Campaign image *"
-          placeholder="Place image URL of your campaign"
-          inputType="url"
-          value={form.image}
-          handleChange={(e) => handleFormFieldChange('image', e)}
-        />
+        <div className="mt-4">
+          <p className="font-epilogue font-medium text-[14px] leading-[22px] text-dark dark:text-light mb-[10px]">
+            Campaign image *
+          </p>
+          <div {...getRootProps()} className={fileStyle}>
+            <input {...getInputProps()} />
+            <div className="flexCenter flex-col text-center">
+              <p className="font-epilogue dark:text-white text-nft-black-1 font-semibold text-xl">
+                JPG, PNG, GIF, SVG, WEBM Max 100mb.
+              </p>
+              <div className="my-12 w-full flex justify-center">
+                {/* <Image src={images.upload} width={100} height={100} objectFit="contain" alt="file upload" className={`${theme === 'light' && 'filter invert'}`} /> */}
+              </div>
+              <p className="font-epilogue dark:text-light text-dark font-semibold text-sm">
+                Drag and Drop File
+              </p>
+              <p className="font-epilogue dark:text-light text-dark font-semibold text-sm mt-2">
+                Or browse media on your device
+              </p>
+            </div>
+          </div>
+          {form.image && (
+            <aside>
+              <div>
+                <img src={form.image} alt="asset file" />
+              </div>
+            </aside>
+          )}
+        </div>
 
         <div className="flex justify-center items-center mt-[40px]">
           <CustomButton
