@@ -10,9 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@thirdweb-dev/chains": "^0.1.39",
-    "@thirdweb-dev/react": "^3.14.21",
-    "@thirdweb-dev/sdk": "^3.10.41",
     "buffer": "6.0.3",
     "ethers": "^5",
     "ipfs-http-client": "56.0.1",

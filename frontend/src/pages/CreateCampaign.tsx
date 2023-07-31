@@ -6,10 +6,8 @@ import { create as ipfsHttpClient } from 'ipfs-http-client';
 import { Buffer } from 'buffer';
 import { useDropzone } from 'react-dropzone';
 
-// import { useStateContext } from '../context';
-import { money } from '../assets';
+import { money, upload } from '../assets';
 import { CustomButton, FormField, Loader } from '../components';
-import { checkIfImage } from '../utils';
 
 const projectId = '2HMLgmtCvb1eNNcB5tqfWXcEGaK';
 const projectSecret = '40ecdb40a18a26b933778e74baff5345';
@@ -30,7 +28,6 @@ const client = ipfsHttpClient({
 const CreateCampaign = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  // const { createCampaign } = useStateContext();
   const [form, setForm] = useState({
     name: '',
     title: '',
@@ -98,15 +95,12 @@ const CreateCampaign = () => {
     //     alert('Provide valid image URL')
     //     setForm({ ...form, image: '' });
     //   }
-    // })
   };
-
-  console.log(form.image);
 
   return (
     <div className="bg-light border-2 border-dark dark:bg-primaryDark dark:border-0 flex justify-center items-center flex-col rounded-[10px] sm:p-10 p-4">
       {isLoading && <Loader />}
-      <div className="flex justify-center items-center p-[16px] sm:min-w-[380px] bg-primary border-2 border-dark dark:border-0 dark:bg-secondaryDark rounded-[10px]">
+      <div className="flex justify-center items-center p-[16px] sm:min-w-[380px] bg-primary dark:bg-secondaryDark rounded-[10px]">
         <h1 className="font-epilogue font-bold sm:text-[25px] text-[18px] leading-[38px] text-light">
           Start a Campaign
         </h1>
@@ -168,8 +162,7 @@ const CreateCampaign = () => {
             handleChange={(e) => handleFormFieldChange('deadline', e)}
           />
         </div>
-
-        <div className="mt-4">
+        <div className="mt-2">
           <p className="font-epilogue font-medium text-[14px] leading-[22px] text-dark dark:text-light mb-[10px]">
             Campaign image *
           </p>
@@ -180,7 +173,11 @@ const CreateCampaign = () => {
                 JPG, PNG, GIF, SVG, WEBM Max 100mb.
               </p>
               <div className="my-12 w-full flex justify-center">
-                {/* <Image src={images.upload} width={100} height={100} objectFit="contain" alt="file upload" className={`${theme === 'light' && 'filter invert'}`} /> */}
+                <img
+                  src={upload}
+                  alt="file upload"
+                  className="dark:invert w-[100px] h-[100px]"
+                />
               </div>
               <p className="font-epilogue dark:text-light text-dark font-semibold text-sm">
                 Drag and Drop File

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from 'next-themes';
+import { useUserStore, loadAccount } from '../store';
+import { providers } from 'ethers';
 
-// import { useStateContext } from '../context';
 import { CustomButton } from './';
 import { search } from '../assets';
 import { navlinks } from '../constants';
@@ -13,9 +14,7 @@ const NavBar = () => {
   const [isActive, setIsActive] = useState('dashboard');
   const [toggleDrawer, setToggleDrawer] = useState(false);
   const { theme } = useTheme();
-  // const { connect, address } = useStateContext();
-
-  const address = '0x1234567890123456789012345678901234567890';
+  const { provider, account, setAccount, setBalance } = useUserStore();
 
   return (
     <div className="flex md:flex-row flex-col-reverse justify-between mb-[35px] gap-6">
@@ -38,12 +37,16 @@ const NavBar = () => {
       <div className="sm:flex hidden flex-row justify-end gap-4">
         <CustomButton
           btnType="button"
-          title={address ? 'Create a campaign' : 'Connect'}
-          // handleClick={() => {
-          //   if (address) navigate('create-campaign');
-          //   else connect();
-          // }}
-          handleClick={() => navigate('create-campaign')}
+          title={account ? 'Create a campaign' : 'Connect'}
+          handleClick={() => {
+            if (account) navigate('create-campaign');
+            else
+              loadAccount(
+                provider as providers.Web3Provider,
+                setAccount,
+                setBalance,
+              );
+          }}
         />
 
         <Link to="/profile">
@@ -67,7 +70,7 @@ const NavBar = () => {
         </div>
 
         <div
-          className={`absolute top-[60px] right-0 left-0 rounded-[10px] bg-light border-2 border-dark dark:bg-secondaryDark dark:border-0 z-10 shadow-secondary py-4 ${
+          className={`absolute top-[60px] right-0 left-0 rounded-[10px] bg-light border-2 border-dark dark:bg-secondaryDark dark:border-0 z-10 py-4 ${
             !toggleDrawer ? '-translate-y-[100vh]' : 'translate-y-0'
           } transition-all duration-700`}
         >
@@ -113,12 +116,16 @@ const NavBar = () => {
           <div className="flex mx-4">
             <CustomButton
               btnType="button"
-              title={address ? 'Create a campaign' : 'Connect'}
-              // handleClick={() => {
-              //   if (address) navigate('create-campaign');
-              //   else connect();
-              // }}
-              handleClick={() => navigate('create-campaign')}
+              title={account ? 'Create a campaign' : 'Connect'}
+              handleClick={() => {
+                if (account) navigate('create-campaign');
+                else
+                  loadAccount(
+                    provider as providers.Web3Provider,
+                    setAccount,
+                    setBalance,
+                  );
+              }}
             />
           </div>
         </div>
