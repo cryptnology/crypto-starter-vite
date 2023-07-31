@@ -27,9 +27,9 @@ export default {
         dark: '#0d121d',
         light: '#f1f2f9',
         primary: '#755BB4',
-        primaryDark: '#58E6D9',
+        primaryDark: '#1c1c24',
         secondary: 'rgb(117 91 180 / 0.2)',
-        secondaryDark: 'rgb(5 118 110 / 0.3)',
+        secondaryDark: '#2c2f32',
       },
       fontFamily: {
         epilogue: ['Epilogue', 'sans-serif'],

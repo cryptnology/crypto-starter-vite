@@ -15,7 +15,7 @@ const ToggleThemeButton = ({ className }: Props) => {
     >
       {theme === 'light' ? (
         <Sun
-          className="bg-[#2c2f32]"
+          className="bg-[#f1f2f9]"
           color={`${theme == 'light' ? '#755BB4' : '#58E6D9'}`}
         />
       ) : (
