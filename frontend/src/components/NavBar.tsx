@@ -47,7 +47,7 @@ const NavBar = () => {
         />
 
         <Link to="/profile">
-          <div className="w-[52px] h-[52px] rounded-[10px] bg-light border-2 border-dark dark:bg-primaryDark dark:border-0 flex justify-center items-center cursor-pointer">
+          <div className="w-[52px] h-[52px] rounded-[10px] bg-light border-2 border-dark dark:bg-secondaryDark dark:border-0 flex justify-center items-center cursor-pointer">
             <div>
               <Profile color={`${theme == 'light' ? '#755BB4' : '#58E6D9'}`} />
             </div>
