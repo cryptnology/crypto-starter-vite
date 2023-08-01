@@ -10,6 +10,8 @@ import {
   useUserStore,
   loadContract,
   useCryptoStarterStore,
+  subscribeToEvents,
+  loadCampaigns,
 } from './store';
 import { config } from './config';
 
@@ -45,14 +47,15 @@ const App = () => {
       contractAbi,
     );
 
-    setCampaigns(await contract.getCampaigns());
+    loadCampaigns(contract, setCampaigns);
 
+    subscribeToEvents(contract, setCampaigns, provider, setAccount, setBalance);
   };
-  
 
   useEffect(() => {
     loadBlockchainData();
   }, []);
+
   return (
     <div className="relative sm:p-8 p-4 font-epilogue dark:text-light text-dark bg-light dark:bg-dark min-h-screen flex flex-row">
       <div className="sm:flex hidden mr-10 relative">

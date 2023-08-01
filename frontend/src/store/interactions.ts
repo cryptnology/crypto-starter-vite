@@ -1,4 +1,4 @@
-import { BigNumber, Contract, Event, ethers, providers } from 'ethers';
+import { BigNumber, Contract, ethers, providers } from 'ethers';
 
 interface Form {
   name: string;
@@ -63,6 +63,16 @@ export const loadContract = async (
   return cryptoStarter;
 };
 
+export const loadCampaigns = async (
+  cryptoStarter: Contract,
+  setCampaigns: (campaigns: []) => void,
+) => {
+  const campaigns = await cryptoStarter.getCampaigns();
+  setCampaigns(campaigns);
+
+  return campaigns;
+};
+
 export const createCampaign = async (
   provider: providers.Web3Provider,
   cryptoStarter: Contract,
@@ -75,7 +85,7 @@ export const createCampaign = async (
 
     const { name, title, description, target, deadline, image } = form;
 
-    transaction = await cryptoStarter
+    (transaction = await cryptoStarter
       .connect(signer)
       .createCampaign(
         account,
@@ -85,11 +95,24 @@ export const createCampaign = async (
         target,
         deadline,
         image,
-      ),  { gasLimit: 3000000 };
+      )),
+      { gasLimit: 3000000 };
 
     await transaction.wait();
-
   } catch (error) {
     console.log(error);
   }
+};
+
+export const subscribeToEvents = (
+  cryptoStarter: Contract,
+  setCampaigns: (campaigns: []) => void,
+  provider: providers.Web3Provider,
+  setAccount: (account: string) => void,
+  setBalance: (balance: string) => void,
+) => {
+  cryptoStarter.on('CreatedCampaign', () => {
+    loadCampaigns(cryptoStarter, setCampaigns);
+    loadAccount(provider, setAccount, setBalance);
+  });
 };

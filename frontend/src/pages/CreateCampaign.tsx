@@ -10,9 +10,11 @@ import { money, upload } from '../assets';
 import { CustomButton, FormField, Loader } from '../components';
 import { createCampaign, useCryptoStarterStore, useUserStore } from '../store';
 
-const auth = `Basic ${Buffer.from(`${import.meta.env.VITE_IPFS_INFURA_PROJECT_ID}:${import.meta.env.VITE_IPFS_INFURA_PROJECT_SECRET}`).toString(
-  'base64',
-)}`;
+const auth = `Basic ${Buffer.from(
+  `${import.meta.env.VITE_IPFS_INFURA_PROJECT_ID}:${
+    import.meta.env.VITE_IPFS_INFURA_PROJECT_SECRET
+  }`,
+).toString('base64')}`;
 
 const client = ipfsHttpClient({
   host: 'ipfs.infura.io',
@@ -88,7 +90,7 @@ const CreateCampaign = () => {
 
     if (!account) return alert('Please connect to a wallet.');
     if (!contract) return alert('Please connect to the Sepolia network.');
-    if (form.image === '') return alert('Please upload an image.')
+    if (form.image === '') return alert('Please upload an image.');
 
     setIsLoading(true);
     await createCampaign(
@@ -99,7 +101,7 @@ const CreateCampaign = () => {
         ...form,
         target: ethers.utils.parseUnits(form.target, 18),
         deadline: new Date(form.deadline).getTime(),
-      }
+      },
     );
     setIsLoading(false);
     navigate('/');
@@ -117,42 +119,42 @@ const CreateCampaign = () => {
       <form
         onSubmit={handleSubmit}
         className="w-full mt-[50px] flex flex-col gap-[30px]"
-      ><div>
-      <p className="font-epilogue font-medium text-[14px] leading-[22px] text-dark dark:text-light mb-[10px]">
-        Campaign image *
-      </p>
-      <div {...getRootProps()} className={fileStyle}>
-        <input {...getInputProps()} />
-        <div className="flexCenter flex-col text-center">
-          <p className="font-epilogue dark:text-white text-nft-black-1 font-semibold text-xl">
-            JPG, PNG, GIF, SVG, WEBM Max 100mb.
+      >
+        <div>
+          <p className="font-epilogue font-medium text-[14px] leading-[22px] text-dark dark:text-light mb-[10px]">
+            Campaign image *
           </p>
-          <div className="my-12 w-full flex justify-center">
-            <img
-              src={upload}
-              alt="file upload"
-              className="dark:invert w-[100px] h-[100px]"
-            />
+          <div {...getRootProps()} className={fileStyle}>
+            <input {...getInputProps()} />
+            <div className="flexCenter flex-col text-center">
+              <p className="font-epilogue dark:text-white text-nft-black-1 font-semibold text-xl">
+                JPG, PNG, GIF, SVG, WEBM Max 100mb.
+              </p>
+              <div className="my-12 w-full flex justify-center">
+                <img
+                  src={upload}
+                  alt="file upload"
+                  className="dark:invert w-[100px] h-[100px]"
+                />
+              </div>
+              <p className="font-epilogue dark:text-light text-dark font-semibold text-sm">
+                Drag and Drop File
+              </p>
+              <p className="font-epilogue dark:text-light text-dark font-semibold text-sm mt-2">
+                Or browse media on your device
+              </p>
+            </div>
           </div>
-          <p className="font-epilogue dark:text-light text-dark font-semibold text-sm">
-            Drag and Drop File
-          </p>
-          <p className="font-epilogue dark:text-light text-dark font-semibold text-sm mt-2">
-            Or browse media on your device
-          </p>
+          {form.image && (
+            <aside>
+              <div className="w-full mt-4 p-5 flex items-center justify-center bg-light border-2 border-dark dark:border-[#46464f] dark:bg-primaryDark rounded-[10px]">
+                <div className="rounded-[10px] overflow-hidden">
+                  <img src={form.image} alt="asset file" />
+                </div>
+              </div>
+            </aside>
+          )}
         </div>
-      </div>
-      {form.image && (
-        <aside>
-          <div className='w-full mt-4 p-5 flex items-center justify-center bg-light border-2 border-dark dark:border-[#46464f] dark:bg-primaryDark rounded-[10px]'>
-
-          <div className='rounded-[10px] overflow-hidden'>
-            <img src={form.image} alt="asset file" />
-          </div>
-          </div>
-        </aside>
-      )}
-    </div>
         <div className="flex flex-wrap gap-[40px]">
           <FormField
             labelName="Your Name *"
@@ -205,7 +207,6 @@ const CreateCampaign = () => {
             handleChange={(e) => handleFormFieldChange('deadline', e)}
           />
         </div>
-        
 
         <div className="flex justify-center items-center mt-[40px]">
           <CustomButton
