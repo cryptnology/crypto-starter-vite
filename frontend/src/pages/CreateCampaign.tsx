@@ -1,6 +1,6 @@
 import { ChangeEvent, useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ethers } from 'ethers';
+import { Contract, ethers, providers } from 'ethers';
 // @ts-ignore
 import { create as ipfsHttpClient } from 'ipfs-http-client';
 import { Buffer } from 'buffer';
@@ -8,6 +8,7 @@ import { useDropzone } from 'react-dropzone';
 
 import { money, upload } from '../assets';
 import { CustomButton, FormField, Loader } from '../components';
+import { createCampaign, useCryptoStarterStore, useUserStore } from '../store';
 
 const projectId = '2HMLgmtCvb1eNNcB5tqfWXcEGaK';
 const projectSecret = '40ecdb40a18a26b933778e74baff5345';
@@ -36,6 +37,8 @@ const CreateCampaign = () => {
     deadline: '',
     image: '',
   });
+  const { contract } = useCryptoStarterStore();
+  const { provider, account } = useUserStore();
 
   const onDrop = useCallback(async (acceptedFile: any[]) => {
     const url = await uploadToIpfs(acceptedFile[0]);
@@ -85,16 +88,19 @@ const CreateCampaign = () => {
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    // checkIfImage(form.image, async (exists) => {
-    //   if(exists) {
-    //     setIsLoading(true)
-    //     await createCampaign({ ...form, target: ethers.utils.parseUnits(form.target, 18)})
-    //     setIsLoading(false);
-    //     navigate('/');
-    //   } else {
-    //     alert('Provide valid image URL')
-    //     setForm({ ...form, image: '' });
-    //   }
+    setIsLoading(true);
+    await createCampaign(
+      provider as providers.Web3Provider,
+      contract as Contract,
+      account,
+      {
+        ...form,
+        target: ethers.utils.parseUnits(form.target, 18),
+        deadline: new Date(form.deadline).getTime(),
+      }
+    );
+    setIsLoading(false);
+    navigate('/');
   };
 
   return (

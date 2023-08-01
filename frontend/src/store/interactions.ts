@@ -1,4 +1,13 @@
-import { Contract, Event, ethers, providers } from 'ethers';
+import { BigNumber, Contract, Event, ethers, providers } from 'ethers';
+
+interface Form {
+  name: string;
+  title: string;
+  description: string;
+  target: BigNumber;
+  deadline: number;
+  image: string;
+}
 
 export const loadProvider = (
   setProvider: (provider: providers.Web3Provider) => void,
@@ -52,4 +61,35 @@ export const loadContract = async (
   setLoaded(true);
 
   return cryptoStarter;
+};
+
+export const createCampaign = async (
+  provider: providers.Web3Provider,
+  cryptoStarter: Contract,
+  account: string,
+  form: Form,
+) => {
+  let transaction;
+  try {
+    const signer = provider.getSigner();
+
+    const { name, title, description, target, deadline, image } = form;
+
+    transaction = await cryptoStarter
+      .connect(signer)
+      .createCampaign(
+        account,
+        name,
+        title,
+        description,
+        target,
+        deadline,
+        image,
+      ),  { gasLimit: 3000000 };
+
+    await transaction.wait();
+
+  } catch (error) {
+    console.log(error);
+  }
 };

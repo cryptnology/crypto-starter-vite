@@ -12,6 +12,7 @@ contract CryptoStarterTest is Test {
     address public CREATOR = makeAddr("creator");
     address public DONATOR = makeAddr("donator");
     uint256 public constant STARTING_USER_BALANCE = 10 ether;
+    string public constant NAME = "John Doe";
     string public constant TITLE = "title";
     string public constant DESCRIPTION = "description";
     uint256 public constant TARGET = 1 ether;
@@ -22,7 +23,14 @@ contract CryptoStarterTest is Test {
      * Events
      */
     event CreatedCampaign(
-        uint256 id, address owner, string title, string description, uint256 target, uint256 deadline, string image
+        uint256 id,
+        address owner,
+        string name,
+        string title,
+        string description,
+        uint256 target,
+        uint256 deadline,
+        string image
     );
     event DonatedToCampaign(uint256 id, address donator, uint256 amount);
 
@@ -30,7 +38,7 @@ contract CryptoStarterTest is Test {
      * Modifiers
      */
     modifier createCampaign() {
-        cryptoStarter.createCampaign(CREATOR, TITLE, DESCRIPTION, TARGET, DEADLINE, IMAGE);
+        cryptoStarter.createCampaign(CREATOR, NAME, TITLE, DESCRIPTION, TARGET, DEADLINE, IMAGE);
         _;
     }
 
@@ -52,14 +60,14 @@ contract CryptoStarterTest is Test {
         uint256 deadline = block.timestamp - 1;
 
         vm.expectRevert(CryptoStarter.CryptoStarter__DeadlineShouldBeAFutureDate.selector);
-        cryptoStarter.createCampaign(CREATOR, TITLE, DESCRIPTION, TARGET, deadline, IMAGE);
+        cryptoStarter.createCampaign(CREATOR, NAME, TITLE, DESCRIPTION, TARGET, deadline, IMAGE);
     }
 
     function testCryptoStarterRevertWhenMinimumTargetValueNotMet() public {
         uint256 target = MIN_DONATION - 1;
 
         vm.expectRevert(CryptoStarter.CryptoStarter__MinimumTargetValueNotMet.selector);
-        cryptoStarter.createCampaign(CREATOR, TITLE, DESCRIPTION, target, DEADLINE, IMAGE);
+        cryptoStarter.createCampaign(CREATOR, NAME, TITLE, DESCRIPTION, target, DEADLINE, IMAGE);
     }
 
     function testAddsCampaignToCampaignsMapping() public createCampaign {
@@ -76,8 +84,8 @@ contract CryptoStarterTest is Test {
 
     function testEmitsEventOnCreationOfACampaign() public {
         vm.expectEmit(true, false, false, false, address(cryptoStarter));
-        emit CreatedCampaign(0, CREATOR, TITLE, DESCRIPTION, TARGET, DEADLINE, IMAGE);
-        cryptoStarter.createCampaign(CREATOR, TITLE, DESCRIPTION, TARGET, DEADLINE, IMAGE);
+        emit CreatedCampaign(0, CREATOR, NAME, TITLE, DESCRIPTION, TARGET, DEADLINE, IMAGE);
+        cryptoStarter.createCampaign(CREATOR, TITLE, NAME, DESCRIPTION, TARGET, DEADLINE, IMAGE);
     }
 
     function testIncrementsNumberOfCampaigns() public createCampaign {
@@ -150,7 +158,7 @@ contract CryptoStarterTest is Test {
     }
 
     function testGetCampaigns() public createCampaign {
-        cryptoStarter.createCampaign(DONATOR, TITLE, DESCRIPTION, TARGET, DEADLINE, IMAGE);
+        cryptoStarter.createCampaign(DONATOR, NAME, TITLE, DESCRIPTION, TARGET, DEADLINE, IMAGE);
         CryptoStarter.Campaign[] memory campaigns = cryptoStarter.getCampaigns();
         assertEq(campaigns.length, 2);
     }

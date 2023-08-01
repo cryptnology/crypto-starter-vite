@@ -23,6 +23,7 @@ contract CryptoStarter {
      */
     struct Campaign {
         address owner;
+        string name;
         string title;
         string description;
         uint256 target;
@@ -49,7 +50,14 @@ contract CryptoStarter {
      * Events
      */
     event CreatedCampaign(
-        uint256 id, address owner, string title, string description, uint256 target, uint256 deadline, string image
+        uint256 id,
+        address owner,
+        string name,
+        string title,
+        string description,
+        uint256 target,
+        uint256 deadline,
+        string image
     );
     event DonatedToCampaign(uint256 id, address donator, uint256 amount);
 
@@ -58,6 +66,7 @@ contract CryptoStarter {
      */
     function createCampaign(
         address _owner,
+        string memory _name,
         string memory _title,
         string memory _description,
         uint256 _target,
@@ -75,6 +84,7 @@ contract CryptoStarter {
         Campaign storage campaign = s_campaigns[s_numberOfCampaigns];
 
         campaign.owner = _owner;
+        campaign.name = _name;
         campaign.title = _title;
         campaign.description = _description;
         campaign.target = _target;
@@ -82,7 +92,7 @@ contract CryptoStarter {
         campaign.amountCollected = 0;
         campaign.image = _image;
 
-        emit CreatedCampaign(s_numberOfCampaigns, _owner, _title, _description, _target, _deadline, _image);
+        emit CreatedCampaign(s_numberOfCampaigns, _owner, _name, _title, _description, _target, _deadline, _image);
 
         s_numberOfCampaigns++;
 

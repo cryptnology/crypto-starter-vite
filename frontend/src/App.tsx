@@ -15,7 +15,7 @@ import { config } from './config';
 
 const App = () => {
   const { setProvider, setChainId, setAccount, setBalance } = useUserStore();
-  const { setContract, setLoaded } = useCryptoStarterStore();
+  const { setCampaigns, setContract, setLoaded } = useCryptoStarterStore();
 
   const loadBlockchainData = async () => {
     const provider = loadProvider(setProvider);
@@ -37,14 +37,18 @@ const App = () => {
 
     if (!contractAddress && !contractAbi) return;
 
-    loadContract(
+    const contract = await loadContract(
       provider,
       contractAddress,
       setContract,
       setLoaded,
       contractAbi,
     );
+
+    setCampaigns(await contract.getCampaigns());
+
   };
+  
 
   useEffect(() => {
     loadBlockchainData();
