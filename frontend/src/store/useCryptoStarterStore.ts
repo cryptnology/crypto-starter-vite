@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Contract, Event, ethers } from 'ethers';
+import { Contract } from 'ethers';
 
 interface CryptoStarterStore {
   loaded: boolean;
@@ -16,8 +16,7 @@ const useCryptoStarterStore = create<CryptoStarterStore>((set) => ({
   campaigns: [],
   setLoaded: (loaded) => set(() => ({ loaded })),
   setContract: (contract) => set(() => ({ contract })),
-  setCampaigns: (campaigns) =>
-    set(() => ({ campaigns: [...campaigns] })),
+  setCampaigns: (campaigns) => set(() => ({ campaigns: [...campaigns] })),
 }));
 
 export default useCryptoStarterStore;
