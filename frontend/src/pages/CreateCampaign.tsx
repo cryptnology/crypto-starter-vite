@@ -10,9 +10,7 @@ import { money, upload } from '../assets';
 import { CustomButton, FormField, Loader } from '../components';
 import { createCampaign, useCryptoStarterStore, useUserStore } from '../store';
 
-const projectId = '2HMLgmtCvb1eNNcB5tqfWXcEGaK';
-const projectSecret = '40ecdb40a18a26b933778e74baff5345';
-const auth = `Basic ${Buffer.from(`${projectId}:${projectSecret}`).toString(
+const auth = `Basic ${Buffer.from(`${import.meta.env.VITE_IPFS_INFURA_PROJECT_ID}:${import.meta.env.VITE_IPFS_INFURA_PROJECT_SECRET}`).toString(
   'base64',
 )}`;
 
@@ -87,6 +85,10 @@ const CreateCampaign = () => {
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
+
+    if (!account) return alert('Please connect to a wallet.');
+    if (!contract) return alert('Please connect to the Sepolia network.');
+    if (form.image === '') return alert('Please upload an image.')
 
     setIsLoading(true);
     await createCampaign(
