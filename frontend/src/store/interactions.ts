@@ -73,6 +73,7 @@ export const loadCampaigns = async (
     (campaign: {
       id: number;
       owner: string;
+      name: string;
       title: string;
       description: string;
       target: number;
@@ -82,6 +83,7 @@ export const loadCampaigns = async (
     }) => ({
       id: campaign.id,
       owner: campaign.owner,
+      name: campaign.name,
       title: campaign.title,
       description: campaign.description,
       target: ethers.utils.formatEther(campaign.target.toString()),
