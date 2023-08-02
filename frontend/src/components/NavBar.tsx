@@ -17,7 +17,7 @@ const NavBar = () => {
   const { provider, account, setAccount, setBalance } = useUserStore();
 
   return (
-    <div className="flex md:flex-row flex-col-reverse justify-between mb-[35px] gap-6">
+    <div className="flex md:flex-row flex-col-reverse justify-between mt-5 mb-[35px] gap-6">
       <div className="lg:flex-1 flex flex-row max-w-[458px] py-2 pl-4 pr-2 h-[52px] bg-light border-2 border-dark dark:bg-primaryDark dark:border-0 rounded-[100px]">
         <input
           type="text"

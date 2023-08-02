@@ -1,5 +1,6 @@
 export { default as CreateCampaign } from './CreateCampaign';
 export { default as Dashboard } from './Dashboard';
+export { default as Loader } from './Loader';
 export { default as Logo } from './Logo';
 export { default as Logout } from './Logout';
 export { default as Menu } from './Menu';

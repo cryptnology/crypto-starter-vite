@@ -27,13 +27,13 @@ const FundCard = ({
 
   return (
     <div
-      className="sm:w-[288px] w-full rounded-[15px] bg-light border-2 border-dark dark:bg-primaryDark dark:border-0 cursor-pointer"
+      className="w-[288px] rounded-[15px] bg-light border-2 border-dark dark:bg-primaryDark dark:border-0 cursor-pointer"
       onClick={handleClick}
     >
       <img
         src={image}
         alt="fund"
-        className="w-full h-[158px] p-0.5 dark:p-0 rounded-[12px] dark:rounded-[15px]"
+        className="w-full h-[158px] object-cover p-0.5 dark:p-0 rounded-[12px] dark:rounded-[15px]"
       />
       <div className="flex flex-col p-4">
         <div className="block">

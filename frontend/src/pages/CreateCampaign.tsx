@@ -108,7 +108,7 @@ const CreateCampaign = () => {
   };
 
   return (
-    <div className="bg-light border-2 border-dark dark:bg-primaryDark dark:border-0 flex justify-center items-center flex-col rounded-[10px] sm:p-10 p-4">
+    <div className="bg-light border-2 mx-auto max-w-[800px] border-dark dark:bg-primaryDark dark:border-0 flex justify-center items-center flex-col rounded-[10px] sm:p-10 p-4">
       {isLoading && <Loader />}
       <div className="flex justify-center items-center p-[16px] sm:min-w-[380px] bg-primary dark:bg-secondaryDark rounded-[10px]">
         <h1 className="font-epilogue font-bold sm:text-[25px] text-[18px] leading-[38px] text-light">

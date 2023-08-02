@@ -1,7 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import { useTheme } from 'next-themes';
+
 import FundCard from './FundCard';
-import { loader } from '../assets';
+import { Loader } from '../icons';
 
 interface DisplayCampaignsProps {
   title: string;
@@ -15,6 +17,7 @@ const DisplayCampaigns = ({
   campaigns,
 }: DisplayCampaignsProps) => {
   const navigate = useNavigate();
+  const { theme } = useTheme();
 
   const handleNavigate = (campaign: { id: string }) => {
     navigate(`/campaign-details/campaign/${Number(campaign.id) + 1}`, {
@@ -28,13 +31,11 @@ const DisplayCampaigns = ({
         {title} ({campaigns.length})
       </h1>
 
-      <div className="flex flex-wrap mt-[20px] gap-[26px]">
+      <div className="flex justify-center lg:justify-normal flex-wrap mt-[20px] gap-[26px]">
         {isLoading && (
-          <img
-            src={loader}
-            alt="loader"
-            className="w-[100px] h-[100px] object-contain"
-          />
+          <div className="w-[100px] h-[100px] object-contain">
+            <Loader color={`${theme === 'dark' ? '#58E6D9' : '#755BB4'}`} />
+          </div>
         )}
 
         {!isLoading && campaigns.length === 0 && (
