@@ -43,9 +43,8 @@ const Sidebar = () => {
               key={link.name}
               {...link}
               handleClick={() => {
-                if (!link.disabled) {
-                  navigate(link.link);
-                }
+                if (link.name === 'logout') navigate(0);
+                else navigate(link.link);
               }}
             >
               <div className="flex justify-center items-center">
