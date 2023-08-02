@@ -22,6 +22,7 @@ contract CryptoStarter {
      * Type declarations
      */
     struct Campaign {
+        uint256 id;
         address owner;
         string name;
         string title;
@@ -83,6 +84,7 @@ contract CryptoStarter {
 
         Campaign storage campaign = s_campaigns[s_numberOfCampaigns];
 
+        campaign.id = s_numberOfCampaigns;
         campaign.owner = _owner;
         campaign.name = _name;
         campaign.title = _title;

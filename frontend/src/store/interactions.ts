@@ -73,6 +73,59 @@ export const loadCampaigns = async (
   return campaigns;
 };
 
+export const loadDonations = async (
+  cryptoStarter: Contract,
+  id: number,
+  setDonators: (donators: []) => void,
+) => {
+  const donations = await cryptoStarter.getDonators(id);
+  setDonators(donations);
+
+  const numberOfDonations = donations[0].length;
+
+  const parsedDonations = [];
+
+  for (let i = 0; i < numberOfDonations; i++) {
+    parsedDonations.push({
+      donator: donations[0][i],
+      donation: ethers.utils.formatEther(donations[1][i].toString()),
+    });
+  }
+
+  return parsedDonations;
+};
+
+export const loadUserCampaigns = (campaigns: [], account: string) => {
+  const filteredCampaigns = campaigns.filter(
+    // @ts-ignore
+    (campaign) => campaign.owner === account,
+  );
+
+  return filteredCampaigns;
+};
+
+export const donate = async (
+  provider: providers.Web3Provider,
+  cryptoStarter: Contract,
+  id: number,
+  amount: number,
+) => {
+  let transaction;
+
+  try {
+    const signer = provider.getSigner();
+
+    (transaction = await cryptoStarter.connect(signer).donateToCampaign(id, {
+      value: ethers.utils.parseEther(amount.toString()),
+    })),
+      { gasLimit: 3000000 };
+
+    await transaction.wait();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const createCampaign = async (
   provider: providers.Web3Provider,
   cryptoStarter: Contract,
