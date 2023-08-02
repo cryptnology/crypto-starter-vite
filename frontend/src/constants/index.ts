@@ -1,11 +1,4 @@
-import {
-  Dashboard,
-  CreateCampaign,
-  Payment,
-  Withdraw,
-  Profile,
-  Logout,
-} from '../icons';
+import { Dashboard, CreateCampaign, Profile, Logout } from '../icons';
 
 export const navlinks = [
   {
