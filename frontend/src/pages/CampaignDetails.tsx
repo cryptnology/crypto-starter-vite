@@ -186,9 +186,12 @@ const CampaignDetails = () => {
 
               <CustomButton
                 btnType="button"
-                title="Fund Campaign"
+                title={
+                  remainingDays === '0' ? 'Campaign Ended' : 'Fund Campaign'
+                }
                 styles="w-full bg-[#8c6dfd]"
                 handleClick={handleDonate}
+                disabled={remainingDays === '0'}
               />
             </div>
           </div>

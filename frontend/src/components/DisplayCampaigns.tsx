@@ -16,13 +16,15 @@ const DisplayCampaigns = ({
 }: DisplayCampaignsProps) => {
   const navigate = useNavigate();
 
-  const handleNavigate = (campaign: { title: string }) => {
-    navigate(`/campaign-details/${campaign.title}`, { state: campaign });
+  const handleNavigate = (campaign: { id: string }) => {
+    navigate(`/campaign-details/campaign/${Number(campaign.id) + 1}`, {
+      state: campaign,
+    });
   };
 
   return (
     <div>
-      <h1 className="font-epilogue font-semibold text-[18px] text-white text-left">
+      <h1 className="font-epilogue font-semibold text-[18px] text-dark dark:text-light text-left">
         {title} ({campaigns.length})
       </h1>
 
@@ -37,7 +39,7 @@ const DisplayCampaigns = ({
 
         {!isLoading && campaigns.length === 0 && (
           <p className="font-epilogue font-semibold text-[14px] leading-[30px] text-[#818183]">
-            You have not created any campigns yet
+            You have not created any campaigns yet
           </p>
         )}
 

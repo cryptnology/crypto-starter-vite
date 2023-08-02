@@ -10,25 +10,13 @@ interface IconProps {
   styles?: string;
   name?: string;
   children?: JSX.Element;
-  isActive?: string;
   disabled?: boolean;
   handleClick?: () => void;
 }
 
-const Icon = ({
-  styles,
-  name,
-  isActive,
-  disabled,
-  handleClick,
-  children,
-}: IconProps) => (
+const Icon = ({ styles, disabled, handleClick, children }: IconProps) => (
   <div
-    className={`w-[48px] h-[48px] rounded-[10px] ${
-      isActive &&
-      isActive === name &&
-      'bg-primary border-2 border-dark dark:bg-secondaryDark dark:border-0'
-    } flex justify-center items-center ${
+    className={`w-[48px] h-[48px] rounded-[10px] flex justify-center items-center ${
       !disabled && 'cursor-pointer'
     } ${styles}`}
     onClick={handleClick}
@@ -56,7 +44,6 @@ const Sidebar = () => {
             <Icon
               key={link.name}
               {...link}
-              isActive={isActive}
               handleClick={() => {
                 if (!link.disabled) {
                   setIsActive(link.name);
@@ -65,15 +52,9 @@ const Sidebar = () => {
               }}
             >
               <div className="flex justify-center items-center">
-                {isActive === link.name ? (
-                  <link.icon
-                    color={`${theme == 'light' ? '#f1f2f9' : '#58E6D9'}`}
-                  />
-                ) : (
-                  <link.icon
-                    color={`${theme == 'light' ? '#0d121d' : '#f1f2f9'}`}
-                  />
-                )}
+                <link.icon
+                  color={`${theme == 'light' ? '#0d121d' : '#f1f2f9'}`}
+                />
               </div>
             </Icon>
           ))}
