@@ -39,9 +39,15 @@ const CampaignDetails = () => {
   };
 
   useEffect(() => {
-    if (contract) {
-      getDonations();
-    }
+    let timeout = setTimeout(() => {
+      if (contract) {
+        getDonations();
+      }
+    }, 100);
+
+    return () => {
+      clearTimeout(timeout);
+    };
   }, [account, contract]);
 
   const handleDonate = async () => {

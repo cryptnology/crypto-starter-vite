@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { navlinks } from '../constants';
@@ -27,7 +26,6 @@ const Icon = ({ styles, disabled, handleClick, children }: IconProps) => (
 
 const Sidebar = () => {
   const navigate = useNavigate();
-  const [isActive, setIsActive] = useState('dashboard');
   const { theme } = useTheme();
 
   return (
@@ -46,7 +44,6 @@ const Sidebar = () => {
               {...link}
               handleClick={() => {
                 if (!link.disabled) {
-                  setIsActive(link.name);
                   navigate(link.link);
                 }
               }}
