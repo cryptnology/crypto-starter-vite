@@ -1,4 +1,4 @@
-import { Dashboard, CreateCampaign, Profile, Logout } from '../icons';
+import { Dashboard, CreateCampaign, Profile } from '../icons';
 
 export const navlinks = [
   {
@@ -15,10 +15,5 @@ export const navlinks = [
     name: 'profile',
     icon: Profile,
     link: '/profile',
-  },
-  {
-    name: 'logout',
-    icon: Logout,
-    link: '/',
   },
 ];
