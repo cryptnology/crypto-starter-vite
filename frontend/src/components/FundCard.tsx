@@ -24,7 +24,7 @@ const FundCard = ({
   image,
   handleClick,
 }: FundCardProps) => {
-  const remainingDays = daysLeft(Number(deadline));
+  const remainingDays = daysLeft(deadline);
 
   return (
     <div
@@ -49,10 +49,10 @@ const FundCard = ({
         <div className="flex justify-between flex-wrap mt-[15px] gap-2">
           <div className="flex flex-col">
             <h4 className="font-epilogue font-semibold text-[14px] text-dark/60 dark:text-[#b2b3bd] leading-[22px]">
-              {ethers.utils.formatUnits(amountCollected, 'ether')}
+              {amountCollected}
             </h4>
             <p className="mt-[3px] font-epilogue font-normal text-[12px] leading-[18px] text-dark dark:text-[#808191] sm:max-w-[120px] truncate">
-              Raised of {ethers.utils.formatUnits(target, 'ether')}
+              Raised of {target}
             </p>
           </div>
           <div className="flex flex-col">

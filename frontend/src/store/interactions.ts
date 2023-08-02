@@ -68,9 +68,34 @@ export const loadCampaigns = async (
   setCampaigns: (campaigns: []) => void,
 ) => {
   const campaigns = await cryptoStarter.getCampaigns();
-  setCampaigns(campaigns);
 
-  return campaigns;
+  const parsedCampaings = campaigns.map(
+    (campaign: {
+      id: number;
+      owner: string;
+      title: string;
+      description: string;
+      target: number;
+      deadline: any;
+      amountCollected: number;
+      image: string;
+    }) => ({
+      id: campaign.id,
+      owner: campaign.owner,
+      title: campaign.title,
+      description: campaign.description,
+      target: ethers.utils.formatEther(campaign.target.toString()),
+      deadline: campaign.deadline.toNumber(),
+      amountCollected: ethers.utils.formatEther(
+        campaign.amountCollected.toString(),
+      ),
+      image: campaign.image,
+    }),
+  );
+
+  setCampaigns(parsedCampaings);
+
+  return parsedCampaings;
 };
 
 export const loadDonations = async (
@@ -165,6 +190,11 @@ export const subscribeToEvents = (
   setBalance: (balance: string) => void,
 ) => {
   cryptoStarter.on('CreatedCampaign', () => {
+    loadCampaigns(cryptoStarter, setCampaigns);
+    loadAccount(provider, setAccount, setBalance);
+  });
+
+  cryptoStarter.on('DonatedToCampaign', () => {
     loadCampaigns(cryptoStarter, setCampaigns);
     loadAccount(provider, setAccount, setBalance);
   });

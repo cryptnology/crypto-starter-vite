@@ -18,21 +18,21 @@ const CampaignDetails = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [amount, setAmount] = useState('');
-  const [donators, setDonators] = useState([]);
+  const [donators, setDonators] = useState<
+    { donator: any; donation: string }[]
+  >([]);
 
   const { contract, campaigns } = useCryptoStarterStore();
   const { provider, account, setDonators: setStoreDonations } = useUserStore();
 
-  const remainingDays = daysLeft(
-    Number(BigInt(state.deadline._hex).toString()),
-  );
+  const remainingDays = daysLeft(Number(state.deadline));
 
   const usersCampaigns = loadUserCampaigns(campaigns, state.owner);
 
   const getDonations = async () => {
     const donators = await loadDonations(
       contract as Contract,
-      Number(BigInt(state.id._hex)),
+      state.id,
       setStoreDonations,
     );
     setDonators(donators);
@@ -72,10 +72,8 @@ const CampaignDetails = () => {
               className="absolute h-full bg-[#4acd8d]"
               style={{
                 width: `${calculateBarPercentage(
-                  Number(ethers.utils.formatUnits(state.target, 'ether')),
-                  Number(
-                    ethers.utils.formatUnits(state.amountCollected, 'ether'),
-                  ),
+                  state.target,
+                  state.amountCollected,
                 )}%`,
                 maxWidth: '100%',
               }}
@@ -86,13 +84,8 @@ const CampaignDetails = () => {
         <div className="flex md:w-[150px] w-full flex-wrap justify-between gap-[30px]">
           <CountBox title="Days Left" value={remainingDays} />
           <CountBox
-            title={`Raised of ${ethers.utils.formatUnits(
-              state.target,
-              'ether',
-            )}`}
-            value={Number(
-              ethers.utils.formatUnits(state.amountCollected, 'ether'),
-            ).toString()}
+            title={`Raised of ${state.target}`}
+            value={state.amountCollected}
           />
           <CountBox title="Total Backers" value={donators.length.toString()} />
         </div>
