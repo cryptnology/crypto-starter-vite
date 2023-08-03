@@ -57,7 +57,7 @@ const App = () => {
   }, []);
 
   return (
-    <Container className="relative font-epilogue dark:text-light text-dark bg-light dark:bg-dark min-h-screen flex flex-row">
+    <Container className="relative font-epilogue dark:text-light text-dark bg-light dark:bg-dark min-h-screen flex flex-row pb-10">
       <div className="sm:flex hidden mr-10 relative">
         <SideBar />
       </div>

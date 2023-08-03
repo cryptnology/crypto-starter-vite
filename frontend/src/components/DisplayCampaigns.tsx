@@ -31,7 +31,7 @@ const DisplayCampaigns = ({
         {title} ({campaigns.length})
       </h1>
 
-      <div className="flex justify-center lg:justify-normal flex-wrap mt-[20px] gap-[26px]">
+      <div className="flex justify-center xl:justify-normal flex-wrap mt-[20px] gap-[26px]">
         {isLoading && (
           <div className="w-[100px] h-[100px] object-contain">
             <Loader color={`${theme === 'dark' ? '#58E6D9' : '#755BB4'}`} />
