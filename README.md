@@ -1,6 +1,6 @@
-# CyptoStarter (Decentralised KickerStarter)
+# CryptoStarter (Decentralised KickStarter)
 
-A decentralised KickerStarter on the Sepolia ethereum test network, where you can create and donate to a campaign. All fully responsive with the choice of using a dark or light theme. The app is built using React, Zustand, Foundry, IPFS, Tailwind and coded in TypeScript.
+A decentralised KickStarter on the Sepolia ethereum test network, where you can create and donate to a campaign. All fully responsive with the choice of using a dark or light theme. The app is built using React, Zustand, Foundry, IPFS, Tailwind and coded in TypeScript.
 
 You can watch a quick demo and walkthrough of the app [here](https://www.youtube.com/watch?v=24x1x96x_l4)
 
