@@ -1,27 +1,110 @@
-# React + TypeScript + Vite
+# CyptoStarter (Decentralised KickerStarter)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A Decentralised KickerStarter on the Sepolia ethereum test network, where you can create and donate to a campaign. All fully responsive with the choice of using a dark or light theme. The app is built using React, Zustand, Foundry, IPFS, Tailwind and coded in TypeScript.
 
-Currently, two official plugins are available:
+You can watch a quick demo and walkthrough of the app [here](https://www.youtube.com/watch?v=24x1x96x_l4)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<img width="1389" alt="crypto-starter" src="https://github.com/cryptnology/crypto-starter-vite/assets/85605968/cda40f98-e32f-40fd-b005-f5a33dc72802">
 
-## Expanding the ESLint configuration
+## Frontend Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Please make sure you first have the [MetaMask](https://metamask.io/) browser extension installed so you can interact with the DApp. After cloning or downloading the repo run ``yarn`` or ``npm install`` to install the dependencies.
 
-- Configure the top-level `parserOptions` property like this:
+You will need a Infura IPFS project id and project secret to be able to upload images to IPFS. Please add these to a ``.env.local`` file and use the ``.env.local.example`` as a reference.
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+## Usage
+
+Please visit the [CryptoStarter](https://crypto-starter-vite.vercel.app) and have your MetaMask wallet connected to the Sepolia test network. 
+
+Make sure you either have SepoliaETH in your MetaMask wallet. If you need SepoliaETH you can visit a [Sepolia Faucet](https://sepoliafaucet.com/).
+
+Please enjoy the DApp.
+
+## Backend Installation
+
+# Getting Started
+
+## Requirements
+
+- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+  - You'll know you did it right if you can run `git --version` and you see a response like `git version x.x.x`
+- [foundry](https://getfoundry.sh/)
+  - You'll know you did it right if you can run `forge --version` and you see a response like `forge 0.2.0 (816e00b 2023-03-16T00:05:26.396218Z)`
+
+# Usage
+
+## Start a local node
+
+```
+make anvil
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Deploy
+
+This will default to your local node. You need to have it running in another terminal in order for it to deploy.
+
+```
+make deploy
+```
+
+## Deploy - Other Network
+
+[See below](#deployment-to-a-testnet-or-mainnet)
+
+## Testing
+
+```
+forge test
+```
+
+or
+
+```
+forge test --fork-url $SEPOLIA_RPC_URL
+```
+
+### Test Coverage
+
+```
+forge coverage
+```
+
+# Deployment to a testnet or mainnet
+
+1. Setup environment variables
+
+You'll want to set your `SEPOLIA_RPC_URL` and `PRIVATE_KEY` as environment variables. You can add them to a `.env` file, similar to what you see in `.env.example`.
+
+- `PRIVATE_KEY`: The private key of your account (like from [metamask](https://metamask.io/)). **NOTE:** FOR DEVELOPMENT, PLEASE USE A KEY THAT DOESN'T HAVE ANY REAL FUNDS ASSOCIATED WITH IT.
+  - You can [learn how to export it here](https://metamask.zendesk.com/hc/en-us/articles/360015289632-How-to-Export-an-Account-Private-Key).
+- `SEPOLIA_RPC_URL`: This is url of the sepolia testnet node you're working with. You can get setup with one for free from [Alchemy](https://alchemy.com/?a=673c802981)
+
+Optionally, add your `ETHERSCAN_API_KEY` if you want to verify your contract on [Etherscan](https://etherscan.io/).
+
+1. Get testnet ETH
+
+Head over to [faucets.chain.link](https://faucets.chain.link/) and get some testnet ETH. You should see the ETH show up in your metamask.
+
+2. Deploy
+
+```
+make deploy ARGS="--network sepolia"
+```
+
+## Estimate gas
+
+You can estimate how much gas things cost by running:
+
+```
+forge snapshot
+```
+
+And you'll see an output file called `.gas-snapshot`
+
+# Formatting
+
+To run code formatting:
+
+```
+forge fmt
+```
